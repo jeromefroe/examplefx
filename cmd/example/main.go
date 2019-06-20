@@ -16,6 +16,7 @@ import (
 //   - jaegerfx
 //   - healthfx
 //   - debugfx for debug pages
+//   - bundle all the above into a common pkgfx module?
 
 func main() {
 	fx.New(
