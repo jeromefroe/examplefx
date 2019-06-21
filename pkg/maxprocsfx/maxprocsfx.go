@@ -15,19 +15,22 @@ import (
 // explicitly-set GOMAXPROCS, Module will prevent applications from starting.
 // To avoid this, set the GOMAXPROCS environment variable to the desired value
 // manually.
-var Module = fx.Invoke(Set)
+var Module = fx.Invoke(setMaxprocs)
 
 // Params defines the dependencies of the maxprocsfx module.
 type Params struct {
 	fx.In
 
 	Lifecycle fx.Lifecycle
-	Logger *zap.Logger
+
+	Logger *zap.Logger `optional:"true"`
 }
 
-// Set uses the provided dependencies to alter runtime concurrency on
-// application startup and undo any alterations before shutting down.
-func Set(p Params) error {
+func setMaxprocs(p Params) error {
+	if p.Logger == nil {
+		p.Logger = zap.NewNop()
+	}
+
 	undo := func() {}
 	p.Lifecycle.Append(fx.Hook{
 		OnStart: func(context.Context) error {

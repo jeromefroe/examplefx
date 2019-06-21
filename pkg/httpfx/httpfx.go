@@ -18,7 +18,7 @@ type Params struct {
 
 	Lifecycle  fx.Lifecycle
 	Shutdowner fx.Shutdowner
-	Logger *zap.Logger
+	Logger     *zap.Logger
 }
 
 // Result defines the objects that the httpfx module provides.
@@ -33,8 +33,8 @@ type Result struct {
 func New(p Params) (Result, error) {
 	mux := http.NewServeMux()
 	server := &http.Server{
-		Addr:    "127.0.0.1:8392",
-		Handler: mux,
+		Addr:     "127.0.0.1:8392",
+		Handler:  mux,
 		ErrorLog: zap.NewStdLog(p.Logger),
 	}
 
